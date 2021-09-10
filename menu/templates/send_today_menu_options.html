@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% block content %}
+  <h1>Nora's Restaurant</h1>
+
+    {% if  today_menu_options %}
+      <p>Hello, below you can see the options of the day!</p>
+          {% for menu_option in today_menu_options %}
+            <p>---------------------------------</p>
+            <h5>{{ menu_option.name|title }}</h5>
+              <ul>
+                {% for foot_option in menu_option.get_food_plates %}
+                  <li>{{ foot_option.name|lower|capfirst }}: {{ foot_option.description|lower }}</li>
+                {% endfor %}
+              </ul>
+          {% endfor %}
+        <a href="{{ take_order_link }}" >¡Take Your Order Here!</a>
+    {% else %}
+      <p>Sorry, at the moment there are no options available for today</p>
+    {% endif %}
+{% endblock %}
+</body>
+</html>
