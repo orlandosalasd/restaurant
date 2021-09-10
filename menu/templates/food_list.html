@@ -1,0 +1,10 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h2>Food Plates</h2>
+    <ul>
+        {% for food in food_options %}
+            <li>{{ food.name }}</li> | <a href="{% url 'food-delete' pk=food.id %}" style="color:red"> Delete</a>
+        {% endfor %}
+    </ul>
+{% endblock %}

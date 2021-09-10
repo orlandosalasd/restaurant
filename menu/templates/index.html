@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Nora's Restaurant</h1>
+
+    {% if  today_menu_options %}
+      <p>Welcome, below you can see the options of the day!</p>
+      <h2>Today's Options</h2>
+          {% if user.profile.is_customer %}
+            <a href="{% url 'order-create' %}"> Take New Order</a>
+          {% endif %}
+          {% for menu_option in today_menu_options %}
+            <p>---------------------------------</p>
+            <h5>{{ menu_option.name|title }}</h5>
+              <ul>
+                {% for foot_option in menu_option.get_food_plates %}
+                  <li>{{ foot_option.name|lower|capfirst }}: {{ foot_option.description|lower }}</li>
+                {% endfor %}
+              </ul>
+              {% if user.profile.is_administrator %}
+                <a href="{% url 'menu-delete'  pk=menu_option.id %}" style="color:red"> Delete Menu Option </a>
+              {% endif %}
+          {% endfor %}
+    {% else %}
+      <p>Welcome, at the moment there are no options available for today</p>
+    {% endif %}
+{% endblock %}

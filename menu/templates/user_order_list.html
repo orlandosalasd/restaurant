@@ -1,0 +1,39 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Orders</h1>
+    {% if user.profile.is_administrator %}
+      {% if  orders %}
+        <p>Below you can see the customers orders</p>
+          {% for order in orders %}
+            <p>---------------------------------</p>
+            <h5>{{ order.user.get_full_name|title }}</h5>
+              <ul>
+                <li>Menu Selected: {{ order.menu.name|lower|capfirst }}</li>
+                <li>Suggestions: {{ order.order_suggestion|lower }}</li>
+              </ul>
+            <a href="{% url 'order-delete' pk=order.id %}" style="color:red"> Delete </a>
+          {% endfor %}
+      {% else %}
+        <p>Today there are no orders yet.</p>
+      {% endif %}
+    {% else %}
+      <a href="{% url 'order-create' %}"> Take New Order</a>
+      {% if  orders %}
+        <p>Below you can see your day order/s</p>
+          {% for order in orders %}
+            <p>---------------------------------</p>
+            <h5>{{ order.menu.name|title }}</h5>
+              <ul>
+                {% for foot_option in order.menu.get_food_plates %}
+                  <li>{{ foot_option.name|lower|capfirst }}: {{ foot_option.description|lower}}</li>
+                {% endfor %}
+                  <li>Order Date: {{order.order_date}}</li>
+              </ul>
+            <a href="{% url 'order-delete' pk=order.id %}" style="color:red"> Cancel Order </a>
+          {% endfor %}
+      {% else %}
+        <p>today you have not ordered.</p>
+      {% endif %}
+    {% endif %}
+{% endblock %}
